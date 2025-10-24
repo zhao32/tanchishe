@@ -1,0 +1,38 @@
+{
+  "ver": "2.3.7",
+  "uuid": "795df40f-49ef-489d-b836-160c3ac181e2",
+  "importer": "texture",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 602,
+  "height": 119,
+  "platformSettings": {},
+  "subMetas": {
+    "《健康游戏忠告》 抵制不良游戏，拒绝盗版游戏。注意自我保护，谨防受骗上当。 适度游戏益脑，沉迷游戏伤身。合理安排时间，享受健康": {
+      "ver": "1.0.6",
+      "uuid": "6fc47b87-acda-41b3-9185-1fb4de1f2585",
+      "importer": "sprite-frame",
+      "rawTextureUuid": "795df40f-49ef-489d-b836-160c3ac181e2",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0.5,
+      "offsetY": 0,
+      "trimX": 3,
+      "trimY": 2,
+      "width": 597,
+      "height": 115,
+      "rawWidth": 602,
+      "rawHeight": 119,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

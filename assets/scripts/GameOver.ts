@@ -2,7 +2,7 @@
 import GButton from "./LGQ/GButton";
 import Lv_DialogView from "./LGQ/Lv_DialogView";
 
-const {ccclass, property} = cc._decorator;
+const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class GameOver extends Lv_DialogView {
@@ -14,9 +14,9 @@ export default class GameOver extends Lv_DialogView {
     @property(cc.Node)
     btnStart: cc.Node = null;
 
-    onLoad () {}
+    onLoad() { }
 
-    start () {
+    start() {
         GButton.AddClick(this.btnHome, () => {
             this.onClose();
             cc.director.loadScene('start');

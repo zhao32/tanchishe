@@ -1,0 +1,38 @@
+{
+  "ver": "2.3.7",
+  "uuid": "ddf1509e-c45d-4f70-a150-6a46ffc7eb7c",
+  "importer": "texture",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 248,
+  "height": 221,
+  "platformSettings": {},
+  "subMetas": {
+    "本轮贪吃蛇身长：": {
+      "ver": "1.0.6",
+      "uuid": "8662e116-e513-4f62-9acb-1fe3f554e5c1",
+      "importer": "sprite-frame",
+      "rawTextureUuid": "ddf1509e-c45d-4f70-a150-6a46ffc7eb7c",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 248,
+      "height": 221,
+      "rawWidth": 248,
+      "rawHeight": 221,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}
