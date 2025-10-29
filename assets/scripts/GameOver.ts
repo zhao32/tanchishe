@@ -29,6 +29,8 @@ export default class GameOver extends Lv_DialogView {
 
     openUIData(data: any): void {
         this.lblScore.string = "分数：" + data;
+
+
     }
 
     // update (dt) {}

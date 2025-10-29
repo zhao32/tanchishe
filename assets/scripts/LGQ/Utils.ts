@@ -1,7 +1,6 @@
 import GameRoot from "../com/GameRoot";
 import NetMsg, { HttpType, InnerMsg } from "../com/MsgCfg";
 // import { GameNet } from "./GameNetManager";
-import HttpUtils from "./HttpUtils";
 import Lv_DialogView from "./Lv_DialogView";
 // import { CallbackObject, IRequestProtocol } from "./NetInterface";
 import ResManager from "./ResManager";
@@ -45,7 +44,7 @@ export class Utils {
             cc.log("当前页面已打开");
             return;
         }
-        
+
         this.openViewArr.push(name);
         ResManager.I.loadBundlePrefab(url, (pb) => {
             if (pb) {
@@ -102,16 +101,6 @@ export class Utils {
         }
     }
 
-    static sendNetMsg(urlData, data?, func?) {
-        // cc.log("数据请求参数", urlData.url, data);
-        if (urlData) {
-            if (urlData.type == HttpType.POST) {
-                HttpUtils.httpPost(urlData, data, func);
-            } else {
-                HttpUtils.httpGets(urlData, data, func);
-            }
-        }
-    }
 
     // static sendNetSocketMsg(method: string, data: any, rspObject: CallbackObject, showTips: boolean = true, force: boolean = false) {
     //     // cc.log("数据请求参数", method, data);
@@ -131,7 +120,7 @@ export class Utils {
     // static removeNetSocketMsg(type, target?, func?) {
     //     GameNet.game?.removeResponeHandler(type, func, target);
     // }
-    
+
 
     static setConvertNum(num: number) {
         if (num >= 100) {
@@ -163,7 +152,7 @@ export class Utils {
         let h: any = date.getHours();
         let m: any = date.getMinutes();
         let s: any = date.getSeconds();
-        
+
         if (mon < 10 && mon > 0) {
             mon = "0" + mon;
         }
@@ -191,7 +180,7 @@ export class Utils {
         GameRoot.I.DisEnablePage();
         this.pageTimeOut = setTimeout(() => {
             this.EnablePage();
-        }, time*1000);
+        }, time * 1000);
     }
 
     static EnablePage() {

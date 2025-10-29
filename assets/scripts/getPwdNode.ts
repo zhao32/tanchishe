@@ -8,6 +8,7 @@
 import PromptFly from "./com/PromptFly";
 import GButton from "./LGQ/GButton";
 import Lv_DialogView from "./LGQ/Lv_DialogView";
+import xhrSupport from "./LGQ/xhrSupport";
 
 const { ccclass, property } = cc._decorator;
 
@@ -54,6 +55,15 @@ export default class NewClass extends Lv_DialogView {
             PromptFly.Show('请输入邮箱');
             return;
         }
+
+        xhrSupport.getEmailCode(this.accountEidt.string, "user_retrieve_pwd", (res: any) => {
+            res = JSON.parse(res);
+            if (res.code == 1) {
+                PromptFly.Show('发送成功');
+            } else {
+                PromptFly.Show(res.msg);
+            }
+        }, () => { })
     }
 
     onChangePwd() {
@@ -71,6 +81,17 @@ export default class NewClass extends Lv_DialogView {
             PromptFly.Show('请输入密码');
             return;
         }
+
+        xhrSupport.changePwd(this.accountEidt.string, this.pwdEidt.string, this.codeEidt.string,
+            (res: any) => {
+                res = JSON.parse(res);
+                if (res.code == 1) {
+                    PromptFly.Show('修改成功');
+                    this.closeView();
+                } else {
+                    PromptFly.Show(res.msg);
+                }
+            }, () => { })
     }
 
     onTogglePwd() {

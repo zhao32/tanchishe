@@ -8,7 +8,9 @@
 import PromptFly from "./com/PromptFly";
 import GButton from "./LGQ/GButton";
 import Lv_DialogView from "./LGQ/Lv_DialogView";
+import GameData from "./LGQ/UserInfo";
 import { Utils } from "./LGQ/Utils";
+import xhrSupport from "./LGQ/xhrSupport";
 
 const { ccclass, property } = cc._decorator;
 
@@ -59,13 +61,17 @@ export default class loginNode extends Lv_DialogView {
         Utils.openBundleView('pb/registerNode');
     }
 
+    onProtocol(target, data) {
+        Utils.openBundleView('pb/protrolNode', data);
+    }
+
     onClose(): void {
         this.closeView();
     }
 
     onLoginHandler(): void {
         if (this.accountEidt.string == '' || this.codeEidt.string == '') {
-            PromptFly.Show('请输入邮箱和验证码');
+            PromptFly.Show('请输入邮箱和密码');
             return;
         }
 
@@ -73,8 +79,19 @@ export default class loginNode extends Lv_DialogView {
             PromptFly.Show('请阅读并同意《用户协议》，《隐私政策》');
             return;
         }
-        this.closeView();
-        Utils.openBundleView('pb/trunUI');
+        // Utils.openBundleView('pb/trunUI');
+
+        xhrSupport.loginHtml(this.accountEidt.string, this.codeEidt.string, (res) => {
+            res = JSON.parse(res);
+            if (res.code == 1) {
+                Utils.openBundleView('pb/trunUI');
+                this.closeView();
+                GameData.userInfo = res.data.userInfo
+                cc.sys.localStorage.setItem("tcsToken", res.data.userInfo.token);
+            } else {
+                PromptFly.Show(res.msg);
+            }
+        }, () => { })
     }
 
 

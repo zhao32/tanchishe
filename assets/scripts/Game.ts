@@ -4,8 +4,10 @@ import head from "./head";
 import AudioManager from "./LGQ/AudioManager";
 import GButton from "./LGQ/GButton";
 import ResManager from "./LGQ/ResManager";
+import GameData from "./LGQ/UserInfo";
 import UserInfo, { UserCfg } from "./LGQ/UserInfo";
 import { Utils } from "./LGQ/Utils";
+import xhrSupport from "./LGQ/xhrSupport";
 
 const { ccclass, property } = cc._decorator;
 
@@ -256,14 +258,18 @@ export default class Game extends cc.Component {
         let data = {
             score: this.score
         };
-        Utils.sendNetMsg(NetMsg.addScore, data, () => {
+        // Utils.sendNetMsg(NetMsg.addScore, data, () => {
 
-        })
+        // })
+
+        xhrSupport.endGame(GameData.sceneId, this.score, 1, (res) => {
+
+        }, () => { })
 
         setTimeout(() => {
             Utils.openBundleView('pb/GameOver', this.score);
         }, 500);
-        
+
     }
 
     onClickMusic() {

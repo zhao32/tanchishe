@@ -5,9 +5,12 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/2.4/manual/en/scripting/life-cycle-callbacks.html
 
+import PromptFly from "./com/PromptFly";
 import GButton from "./LGQ/GButton";
 import Lv_DialogView from "./LGQ/Lv_DialogView";
+import GameData from "./LGQ/UserInfo";
 import { Utils } from "./LGQ/Utils";
+import xhrSupport from "./LGQ/xhrSupport";
 
 const { ccclass, property } = cc._decorator;
 
@@ -30,10 +33,12 @@ export default class NewClass extends Lv_DialogView {
     btnStart: cc.Node = null;
 
     @property(cc.Label)
-    coinLabel: cc.Label = null;
+    scoreLabel: cc.Label = null;
 
     sceneIdx = 0
     difficultyValue = 0
+
+    sceneDataList = []
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -58,11 +63,31 @@ export default class NewClass extends Lv_DialogView {
 
         GButton.AddClick(this.btnStart, () => {
             let call = () => {
-                this.onClose();
-                cc.director.loadScene('game');
+                xhrSupport.enterGameByScore(this.sceneDataList[this.sceneIdx].id, (res) => {
+                    res = JSON.parse(res);
+                    if (res.code == 1) {
+                        this.onClose();
+                        cc.director.loadScene('game');
+                        GameData.userInfo.score -= 10
+                        GameData.sceneId = this.sceneDataList[this.sceneIdx].id
+                    } else {
+                        PromptFly.Show(res.msg);
+                    }
+                }, () => { })
             }
             Utils.openBundleView('pb/commonTipNode', [10, "进入游戏", call]);
         }, this)
+
+        this.scoreLabel.string = GameData.userInfo.score.toString()
+
+        xhrSupport.getSceneList(1, 100, (res) => {
+            res = JSON.parse(res)
+            if (res.code == 1) {
+                this.sceneDataList = res.data.list
+            } else {
+                PromptFly.Show(res.msg);
+            }
+        }, () => { })
     }
 
     onToggleScene(event, customEventData) {

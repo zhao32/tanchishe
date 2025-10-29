@@ -2263,7 +2263,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "1",
+    "_name": "icon",
     "_objFlags": 0,
     "_parent": {
       "__id__": 56
@@ -2370,7 +2370,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "New Label",
+    "_name": "nameLabel",
     "_objFlags": 0,
     "_parent": {
       "__id__": 56
@@ -2729,7 +2729,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "toggle1",
+    "_name": "toggle2",
     "_objFlags": 0,
     "_parent": {
       "__id__": 54
@@ -2871,7 +2871,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "2",
+    "_name": "icon",
     "_objFlags": 0,
     "_parent": {
       "__id__": 72
@@ -2978,7 +2978,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "New Label",
+    "_name": "nameLabel",
     "_objFlags": 0,
     "_parent": {
       "__id__": 72
@@ -3337,7 +3337,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "toggle1",
+    "_name": "toggle3",
     "_objFlags": 0,
     "_parent": {
       "__id__": 54
@@ -3479,7 +3479,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "1",
+    "_name": "icon",
     "_objFlags": 0,
     "_parent": {
       "__id__": 88
@@ -3586,7 +3586,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "New Label",
+    "_name": "nameLabel",
     "_objFlags": 0,
     "_parent": {
       "__id__": 88
@@ -4379,7 +4379,7 @@
     "btnStart": {
       "__id__": 5
     },
-    "coinLabel": {
+    "scoreLabel": {
       "__id__": 13
     },
     "_id": ""
