@@ -63,7 +63,7 @@ export default class Lv_DialogView extends cc.Component {
     }
 
     closeView() {
-        Utils.removeView(this.node.name);
+        if (this.node) Utils.removeView(this.node.name);
     }
 
     // update (dt) {}

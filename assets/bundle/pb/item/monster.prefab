@@ -13,7 +13,7 @@
   },
   {
     "__type__": "cc.Node",
-    "_name": "food",
+    "_name": "monster",
     "_objFlags": 0,
     "_parent": null,
     "_children": [],
@@ -42,8 +42,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 43,
-      "height": 43
+      "width": 46,
+      "height": 44
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -61,8 +61,8 @@
         0,
         0,
         1,
-        0.8,
-        0.8,
+        1,
+        1,
         1
       ]
     },
@@ -75,8 +75,8 @@
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
-    "_groupIndex": 3,
-    "groupIndex": 3,
+    "_groupIndex": 8,
+    "groupIndex": 8,
     "_id": ""
   },
   {
@@ -95,10 +95,10 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "b943f84d-d6b1-4502-85b4-0767b3fbb546"
+      "__uuid__": "f66bab96-cbdf-47c8-a0ec-1b645bb83f5d"
     },
     "_type": 0,
-    "_sizeMode": 2,
+    "_sizeMode": 1,
     "_fillType": 0,
     "_fillCenter": {
       "__type__": "cc.Vec2",
@@ -112,13 +112,15 @@
     "_id": ""
   },
   {
-    "__type__": "bbf04aADN1OlKZzLl0/Ladg",
+    "__type__": "1a41esMbP9Ej7RB5v84dGHS",
     "_name": "",
     "_objFlags": 0,
     "node": {
       "__id__": 1
     },
     "_enabled": true,
+    "ndAni": null,
+    "type": 1,
     "_id": ""
   },
   {
@@ -138,88 +140,88 @@
     "points": [
       {
         "__type__": "cc.Vec2",
-        "x": -7.4,
-        "y": 17.3
+        "x": -4,
+        "y": 22
       },
       {
         "__type__": "cc.Vec2",
-        "x": -10.62,
-        "y": 7.38
+        "x": -7,
+        "y": 20
       },
       {
         "__type__": "cc.Vec2",
-        "x": -15.05,
-        "y": 4.13
+        "x": -14,
+        "y": 19
       },
       {
         "__type__": "cc.Vec2",
-        "x": -17.79,
-        "y": 1.46
+        "x": -22,
+        "y": 9
       },
       {
         "__type__": "cc.Vec2",
-        "x": -17.96,
-        "y": -2.73
+        "x": -23,
+        "y": -8
       },
       {
         "__type__": "cc.Vec2",
-        "x": -9.26,
-        "y": -7.99
+        "x": -17,
+        "y": -13
       },
       {
         "__type__": "cc.Vec2",
-        "x": -8.69,
-        "y": -11.03
+        "x": -17,
+        "y": -15
       },
       {
         "__type__": "cc.Vec2",
-        "x": -4.7,
-        "y": -17.85
+        "x": 0,
+        "y": -22
       },
       {
         "__type__": "cc.Vec2",
-        "x": -0.71,
-        "y": -17.43
+        "x": 5,
+        "y": -22
       },
       {
         "__type__": "cc.Vec2",
-        "x": 5.82,
-        "y": -10.95
+        "x": 9,
+        "y": -19
       },
       {
         "__type__": "cc.Vec2",
-        "x": 14.45,
-        "y": -11.08
+        "x": 15,
+        "y": -18
       },
       {
         "__type__": "cc.Vec2",
-        "x": 17.22,
-        "y": -6.06
+        "x": 17,
+        "y": -13
       },
       {
         "__type__": "cc.Vec2",
-        "x": 13.22,
-        "y": 1.32
+        "x": 21,
+        "y": -9
       },
       {
         "__type__": "cc.Vec2",
-        "x": 15.68,
-        "y": 10.34
+        "x": 23,
+        "y": -9
       },
       {
         "__type__": "cc.Vec2",
-        "x": 13.31,
-        "y": 13.74
+        "x": 23,
+        "y": 2
       },
       {
         "__type__": "cc.Vec2",
-        "x": 2.66,
-        "y": 13.83
+        "x": 18,
+        "y": 12
       },
       {
         "__type__": "cc.Vec2",
-        "x": -3.5,
-        "y": 18.01
+        "x": 4,
+        "y": 22
       }
     ],
     "_id": ""

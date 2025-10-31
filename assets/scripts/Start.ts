@@ -4,8 +4,10 @@ import AudioManager from "./LGQ/AudioManager";
 import GButton from "./LGQ/GButton";
 import ResManager from "./LGQ/ResManager";
 import SdkUtils from "./LGQ/SdkUtils";
+import GameData from "./LGQ/UserInfo";
 import UserInfo, { UserCfg } from "./LGQ/UserInfo";
 import { Utils } from "./LGQ/Utils";
+import xhrSupport from "./LGQ/xhrSupport";
 import ModelPlayer from "./model/ModelPlayer";
 
 const { ccclass, property } = cc._decorator;
@@ -15,27 +17,27 @@ export default class Start extends cc.Component {
 
     @property(cc.Node)
     btnLogin: cc.Node = null;
-    @property(cc.Node)
-    ndLogin: cc.Node = null;
-    @property(cc.Node)
-    ndMain: cc.Node = null;
+    // @property(cc.Node)
+    // ndLogin: cc.Node = null;
+    // @property(cc.Node)
+    // ndMain: cc.Node = null;
 
     @property(cc.Node)
     loginBG: cc.Node = null;
 
-    @property(cc.Node)
-    ndGH: cc.Node = null;
-    @property(cc.EditBox)
-    editBox: cc.EditBox = null;
-    @property(cc.Node)
-    btnGH: cc.Node = null;
+    // @property(cc.Node)
+    // ndGH: cc.Node = null;
+    // @property(cc.EditBox)
+    // editBox: cc.EditBox = null;
+    // @property(cc.Node)
+    // btnGH: cc.Node = null;
 
-    @property(cc.Node)
-    btnMusic: cc.Node = null;
-    @property(cc.Node)
-    ndKai: cc.Node = null;
-    @property(cc.Node)
-    ndGuan: cc.Node = null;
+    // @property(cc.Node)
+    // btnMusic: cc.Node = null;
+    // @property(cc.Node)
+    // ndKai: cc.Node = null;
+    // @property(cc.Node)
+    // ndGuan: cc.Node = null;
 
     @property(cc.ProgressBar)
     pro: cc.ProgressBar = null;
@@ -43,14 +45,33 @@ export default class Start extends cc.Component {
     @property(cc.Node)
     proIcon: cc.Node = null;
 
+    loadFinished: boolean = false;
+
 
     protected update(dt: number): void {
         if (this.pro.progress < 1) {
             if (Math.random() * 1 > 0.3) this.pro.progress += 0.01;
             this.proIcon.x = this.pro.totalLength * this.pro.progress;
         } else {
-            this.pro.node.parent.active = false;
-            this.btnLogin.active = true;
+            if (this.loadFinished == false) {
+                this.loadFinished = true;
+
+                xhrSupport.getUserInfo((res) => {
+                    res = JSON.parse(res);
+                    if (res.code == 1) {
+                        Utils.openBundleView('pb/trunUI');
+                        GameData.userInfo = res.data.userInfo;
+                    } else {
+                        this.btnLogin.active = true;
+                        this.pro.node.parent.active = false;
+                    }
+
+                }, (fail) => {
+                    this.btnLogin.active = true;
+                    this.pro.node.parent.active = false;
+                })
+            }
+
         }
     }
 
@@ -62,6 +83,7 @@ export default class Start extends cc.Component {
     }
 
     start() {
+        this.loadFinished = false;
         this.pro.node.parent.active = true;
         this.pro.progress = 0;
         this.btnLogin.active = false;
@@ -69,140 +91,138 @@ export default class Start extends cc.Component {
             Utils.openBundleView('pb/loginNode');
         }, this)
 
+        this.loadBundle();
+        cc.director.preloadScene('game');
 
 
+        // this.ndLogin.active = false;
+        // let isCodeBtn = false;
+        // let isWxLogin = false;
+        // let data: any = {};
+        // if (!Utils.isLogin) {
+        //     this.ndLogin.active = true;
+        //     this.loadBundle();
+        //     cc.director.preloadScene('game');
 
+        //     // if (cc.sys.platform == cc.sys.WECHAT_GAME) {
+        //     //     SdkUtils.login((code) => {
+        //     //         SdkUtils.getUserInfo((res) => {
+        //     //             isWxLogin = true;
+        //     //             let name = res.nickName;
+        //     //             let avatarUrl = res.avatarUrl;
 
+        //     //             // console.log("数据11111111", code, res);
+        //     //             //登录接口
+        //     //             data = {
+        //     //                 code: code,
+        //     //                 avatarUrl: avatarUrl,
+        //     //                 nickName: name
+        //     //             }
+        //     //             if (isCodeBtn) {
+        //     //                 Utils.sendNetMsg(NetMsg.login, data, (res) => {
+        //     //                     if (res && res.code == 1) {
+        //     //                         let _data = res.data;
 
-        this.ndLogin.active = false;
-        this.ndMain.active = false;
-        let isCodeBtn = false;
-        let isWxLogin = false;
-        let data: any = {};
-        if (!Utils.isLogin) {
-            this.ndLogin.active = true;
-            this.loadBundle();
-            cc.director.preloadScene('game');
+        //     //                         ModelPlayer.I.token = _data.token;
+        //     //                         let nData = _data.user;
+        //     //                         ModelPlayer.I.avatar = nData.avatarUrl;
+        //     //                         ModelPlayer.I.name = nData.nickName;
+        //     //                         ModelPlayer.I.openid = nData.openid;
+        //     //                         ModelPlayer.I.unionid = nData.unionid;
+        //     //                         ModelPlayer.I.id = nData.id;
+        //     //                         ModelPlayer.I.gameClose = nData.game_close;
 
-            // if (cc.sys.platform == cc.sys.WECHAT_GAME) {
-            //     SdkUtils.login((code) => {
-            //         SdkUtils.getUserInfo((res) => {
-            //             isWxLogin = true;
-            //             let name = res.nickName;
-            //             let avatarUrl = res.avatarUrl;
+        //     //                         if (_data.isBindWork == 1) {    //1,需要绑定;0,不需要绑定
+        //     //                             this.btnLogin.active = false;
+        //     //                             this.ndGH.active = true;
+        //     //                         } else {
+        //     //                             Utils.isLogin = true;
+        //     //                             this.showMain();
+        //     //                         }
+        //     //                     }
 
-            //             // console.log("数据11111111", code, res);
-            //             //登录接口
-            //             data = {
-            //                 code: code,
-            //                 avatarUrl: avatarUrl,
-            //                 nickName: name
-            //             }
-            //             if (isCodeBtn) {
-            //                 Utils.sendNetMsg(NetMsg.login, data, (res) => {
-            //                     if (res && res.code == 1) {
-            //                         let _data = res.data;
+        //     //                 });
+        //     //             }
+        //     //         }, () => {
+        //     //             isCodeBtn = true;
+        //     //         });
+        //     //     });
 
-            //                         ModelPlayer.I.token = _data.token;
-            //                         let nData = _data.user;
-            //                         ModelPlayer.I.avatar = nData.avatarUrl;
-            //                         ModelPlayer.I.name = nData.nickName;
-            //                         ModelPlayer.I.openid = nData.openid;
-            //                         ModelPlayer.I.unionid = nData.unionid;
-            //                         ModelPlayer.I.id = nData.id;
-            //                         ModelPlayer.I.gameClose = nData.game_close;
+        //     //     GButton.AddClick(this.btnLogin, () => {
+        //     //         if (!isCodeBtn && isWxLogin) {
+        //     //             Utils.sendNetMsg(NetMsg.login, data, (res) => {
+        //     //                 if (res && res.code == 1) {
+        //     //                     let _data = res.data;
 
-            //                         if (_data.isBindWork == 1) {    //1,需要绑定;0,不需要绑定
-            //                             this.btnLogin.active = false;
-            //                             this.ndGH.active = true;
-            //                         } else {
-            //                             Utils.isLogin = true;
-            //                             this.showMain();
-            //                         }
-            //                     }
+        //     //                     ModelPlayer.I.token = _data.token;
+        //     //                     let nData = _data.user;
+        //     //                     ModelPlayer.I.avatar = nData.avatarUrl;
+        //     //                     ModelPlayer.I.name = nData.nickName;
+        //     //                     ModelPlayer.I.openid = nData.openid;
+        //     //                     ModelPlayer.I.unionid = nData.unionid;
+        //     //                     ModelPlayer.I.id = nData.id;
+        //     //                     ModelPlayer.I.gameClose = nData.game_close;
 
-            //                 });
-            //             }
-            //         }, () => {
-            //             isCodeBtn = true;
-            //         });
-            //     });
+        //     //                     if (_data.isBindWork == 1) {    //1,需要绑定;0,不需要绑定
+        //     //                         this.btnLogin.active = false;
+        //     //                         this.ndGH.active = true;
+        //     //                     } else {
+        //     //                         Utils.isLogin = true;
+        //     //                         this.showMain();
+        //     //                     }
+        //     //                 }
 
-            //     GButton.AddClick(this.btnLogin, () => {
-            //         if (!isCodeBtn && isWxLogin) {
-            //             Utils.sendNetMsg(NetMsg.login, data, (res) => {
-            //                 if (res && res.code == 1) {
-            //                     let _data = res.data;
+        //     //             });
+        //     //         }
 
-            //                     ModelPlayer.I.token = _data.token;
-            //                     let nData = _data.user;
-            //                     ModelPlayer.I.avatar = nData.avatarUrl;
-            //                     ModelPlayer.I.name = nData.nickName;
-            //                     ModelPlayer.I.openid = nData.openid;
-            //                     ModelPlayer.I.unionid = nData.unionid;
-            //                     ModelPlayer.I.id = nData.id;
-            //                     ModelPlayer.I.gameClose = nData.game_close;
+        //     //     }, this);
+        //     // } else {
+        //     //     isCodeBtn = false;
+        //     //     isWxLogin = true;
+        //     //     this.btnLogin.active = false;
+        //     //     this.ndGH.active = true;
 
-            //                     if (_data.isBindWork == 1) {    //1,需要绑定;0,不需要绑定
-            //                         this.btnLogin.active = false;
-            //                         this.ndGH.active = true;
-            //                     } else {
-            //                         Utils.isLogin = true;
-            //                         this.showMain();
-            //                     }
-            //                 }
+        //     //     // let userData = UserInfo.getItem(UserCfg.Token, false);
+        //     //     // // console.log("数据11111111111", userData);
+        //     //     // if (!userData || !userData.gonghao || userData.gonghao == '') {
+        //     //     //     this.ndGH.active = true;
+        //     //     // } else {
+        //     //     //     Utils.isLogin = true;
+        //     //     //     this.ndGH.active = false;
+        //     //     //     // ModelPlayer.I.token = userData.token;
+        //     //     //     // ModelPlayer.I.id = userData.id;
+        //     //     //     let data = {
+        //     //     //         work_number: userData.gonghao,
+        //     //     //     };
+        //     //     //     Utils.sendNetMsg(NetMsg.authWorkLogin, data, (res) => {
+        //     //     //         if (res && res.code == 1) {
 
-            //             });
-            //         }
+        //     //     //             let _data = res.data;
 
-            //     }, this);
-            // } else {
-            //     isCodeBtn = false;
-            //     isWxLogin = true;
-            //     this.btnLogin.active = false;
-            //     this.ndGH.active = true;
+        //     //     //             ModelPlayer.I.token = _data.token;
 
-            //     // let userData = UserInfo.getItem(UserCfg.Token, false);
-            //     // // console.log("数据11111111111", userData);
-            //     // if (!userData || !userData.gonghao || userData.gonghao == '') {
-            //     //     this.ndGH.active = true;
-            //     // } else {
-            //     //     Utils.isLogin = true;
-            //     //     this.ndGH.active = false;
-            //     //     // ModelPlayer.I.token = userData.token;
-            //     //     // ModelPlayer.I.id = userData.id;
-            //     //     let data = {
-            //     //         work_number: userData.gonghao,
-            //     //     };
-            //     //     Utils.sendNetMsg(NetMsg.authWorkLogin, data, (res) => {
-            //     //         if (res && res.code == 1) {
+        //     //     //             let nData = _data.user;
+        //     //     //             ModelPlayer.I.avatar = nData.avatar;
+        //     //     //             ModelPlayer.I.name = nData.name;
+        //     //     //             ModelPlayer.I.id = nData.id;
 
-            //     //             let _data = res.data;
+        //     //     //             let da = {
+        //     //     //                 token: _data.token,
+        //     //     //                 id: nData.id,
+        //     //     //                 gonghao: userData.gonghao,
+        //     //     //             }
+        //     //     //             UserInfo.setItem(UserCfg.Token, da, false)
+        //     //     //             Utils.isLogin = true;
+        //     //     //             this.showMain();
+        //     //     //         }
+        //     //     //     })
+        //     //     //     this.showMain();
+        //     //     // }
 
-            //     //             ModelPlayer.I.token = _data.token;
-
-            //     //             let nData = _data.user;
-            //     //             ModelPlayer.I.avatar = nData.avatar;
-            //     //             ModelPlayer.I.name = nData.name;
-            //     //             ModelPlayer.I.id = nData.id;
-
-            //     //             let da = {
-            //     //                 token: _data.token,
-            //     //                 id: nData.id,
-            //     //                 gonghao: userData.gonghao,
-            //     //             }
-            //     //             UserInfo.setItem(UserCfg.Token, da, false)
-            //     //             Utils.isLogin = true;
-            //     //             this.showMain();
-            //     //         }
-            //     //     })
-            //     //     this.showMain();
-            //     // }
-
-            // }
-        } else {
-            this.showMain();
-        }
+        //     // }
+        // } else {
+        //     // this.showMain();
+        // }
 
         // GButton.AddClick(this.btnGH, () => {
         //     //验证工号
@@ -266,29 +286,29 @@ export default class Start extends cc.Component {
 
         // }, this);
 
-        GButton.AddClick(this.btnMusic, this.onClickMusic, this);
+        // GButton.AddClick(this.btnMusic, this.onClickMusic, this);
 
     }
 
-    showMain() {
-        let musicData = UserInfo.getItem(UserCfg.MusicData, false);
-        if (!musicData) {
-            let data = {
-                isMusic: true,
-                isEffect: true
-            }
-            musicData = data;
+    // showMain() {
+    //     let musicData = UserInfo.getItem(UserCfg.MusicData, false);
+    //     if (!musicData) {
+    //         let data = {
+    //             isMusic: true,
+    //             isEffect: true
+    //         }
+    //         musicData = data;
 
-            UserInfo.setItem(UserCfg.MusicData, musicData, false);
-        }
-        AudioManager.updateMusic(musicData);
-        this.ndKai.active = musicData.isMusic;
-        this.ndGuan.active = !musicData.isMusic;
+    //         UserInfo.setItem(UserCfg.MusicData, musicData, false);
+    //     }
+    //     AudioManager.updateMusic(musicData);
+    //     this.ndKai.active = musicData.isMusic;
+    //     this.ndGuan.active = !musicData.isMusic;
 
-        AudioManager.playMusic("gameBGM");
-        this.ndLogin.active = false;
-        this.ndMain.active = true;
-    }
+    //     AudioManager.playMusic("gameBGM");
+    //     this.ndLogin.active = false;
+    //     this.ndMain.active = true;
+    // }
 
 
     loadBundle() {
@@ -319,33 +339,33 @@ export default class Start extends cc.Component {
         });
     }
 
-    onClickMusic() {
-        let musicData = UserInfo.getItem(UserCfg.MusicData, false);
-        if (!musicData) {
-            let data = {
-                isMusic: true,
-                isEffect: true
-            }
-            musicData = data;
+    // onClickMusic() {
+    //     let musicData = UserInfo.getItem(UserCfg.MusicData, false);
+    //     if (!musicData) {
+    //         let data = {
+    //             isMusic: true,
+    //             isEffect: true
+    //         }
+    //         musicData = data;
 
-            UserInfo.setItem(UserCfg.MusicData, musicData, false);
-        }
+    //         UserInfo.setItem(UserCfg.MusicData, musicData, false);
+    //     }
 
-        musicData.isMusic = !musicData.isMusic;
-        musicData.isEffect = !musicData.isEffect;
-        if (musicData.isMusic) {//播放音乐
-            AudioManager.resumeMusic();
-        }
-        else {//停止音乐
-            AudioManager.pauseMusic();
-        }
+    //     musicData.isMusic = !musicData.isMusic;
+    //     musicData.isEffect = !musicData.isEffect;
+    //     if (musicData.isMusic) {//播放音乐
+    //         AudioManager.resumeMusic();
+    //     }
+    //     else {//停止音乐
+    //         AudioManager.pauseMusic();
+    //     }
 
-        AudioManager.updateMusic(musicData);
+    //     AudioManager.updateMusic(musicData);
 
-        this.ndKai.active = musicData.isMusic;
-        this.ndGuan.active = !musicData.isMusic;
-        UserInfo.setItem(UserCfg.MusicData, musicData, false);
-    }
+    //     this.ndKai.active = musicData.isMusic;
+    //     this.ndGuan.active = !musicData.isMusic;
+    //     UserInfo.setItem(UserCfg.MusicData, musicData, false);
+    // }
 
     // update (dt) {}
 }

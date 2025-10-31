@@ -21,6 +21,10 @@ export default class NewClass extends cc.Component {
     @property(cc.Label)
     priceLabel: cc.Label = null;
 
+
+    @property(cc.Label)
+    stateLabel: cc.Label = null;
+
     @property(cc.Sprite)
     iconSprite: cc.Sprite = null;
 
@@ -30,8 +34,8 @@ export default class NewClass extends cc.Component {
     @property(cc.Node)
     btnUse: cc.Node = null;
 
-    @property(cc.Node)
-    useState: cc.Node = null;
+    // @property(cc.Node)
+    // useState: cc.Node = null;
 
 
     _data
@@ -51,17 +55,20 @@ export default class NewClass extends cc.Component {
             this.priceLabel.node.parent.active = false
             if (data.use_status) {
                 this.btnUse.active = false
-                this.useState.active = true
+                // this.useState.active = true
+                this.stateLabel.string = "使用中"
             } else {
                 this.btnUse.active = true
-                this.useState.active = false
+                // this.useState.active = false
+                this.stateLabel.string = "已拥有"
             }
         } else {
-            this.useState.active = false
+            // this.useState.active = false
             this.priceLabel.node.parent.active = true
             this.btnBuy.active = true
             this.btnUse.active = false
             this.priceLabel.string = data.price
+            this.stateLabel.string = ""
         }
 
         cc.assetManager.loadRemote(xhrSupport.httpUrl + data.cover_image, (err, texture: any) => {

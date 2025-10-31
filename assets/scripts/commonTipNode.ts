@@ -24,7 +24,11 @@ export default class NewClass extends Lv_DialogView {
 
 
     @property(cc.Label)
-    desLabel: cc.Label = null;
+    desLabel1: cc.Label = null;
+
+    @property(cc.Label)
+    desLabel2: cc.Label = null;
+
 
     call: Function = null;
     // onLoad () {}
@@ -40,8 +44,9 @@ export default class NewClass extends Lv_DialogView {
 
     openUIData(data): void {
         this.numLabel.string = data[0];
-        this.desLabel.string = data[1];
-        this.call = data[2];
+        this.desLabel1.string = data[1];
+        this.desLabel2.string = data[2];
+        this.call = data[3];
     }
 
     onSure(): void {

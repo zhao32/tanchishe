@@ -35,8 +35,6 @@ export default class NewClass extends Lv_DialogView {
     @property(cc.Label)
     scoreLabel: cc.Label = null;
 
-    sceneIdx = 0
-    difficultyValue = 0
 
     sceneDataList = []
 
@@ -46,7 +44,7 @@ export default class NewClass extends Lv_DialogView {
 
     start() {
         GButton.AddClick(this.btnSet, () => {
-            Utils.openBundleView('pb/setNode');
+            Utils.openBundleView('pb/setNode', "trun");
         }, this)
 
         GButton.AddClick(this.btnRecharge, () => {
@@ -63,19 +61,20 @@ export default class NewClass extends Lv_DialogView {
 
         GButton.AddClick(this.btnStart, () => {
             let call = () => {
-                xhrSupport.enterGameByScore(this.sceneDataList[this.sceneIdx].id, (res) => {
+                xhrSupport.enterGameByScore(this.sceneDataList[GameData.sceneIdx].id, (res) => {
                     res = JSON.parse(res);
                     if (res.code == 1) {
                         this.onClose();
                         cc.director.loadScene('game');
                         GameData.userInfo.score -= 10
-                        GameData.sceneId = this.sceneDataList[this.sceneIdx].id
+                        GameData.sceneId = res.data.id
+                        GameData.sceneTypeId = this.sceneDataList[GameData.sceneIdx].id
                     } else {
                         PromptFly.Show(res.msg);
                     }
                 }, () => { })
             }
-            Utils.openBundleView('pb/commonTipNode', [10, "进入游戏", call]);
+            Utils.openBundleView('pb/commonTipNode', [10, "是否消耗", "并进入游戏", call]);
         }, this)
 
         this.scoreLabel.string = GameData.userInfo.score.toString()
@@ -91,11 +90,11 @@ export default class NewClass extends Lv_DialogView {
     }
 
     onToggleScene(event, customEventData) {
-        this.sceneIdx = parseInt(customEventData)
+        GameData.sceneIdx = parseInt(customEventData)
     }
 
     onToggleDifficulty(event, customEventData) {
-        this.difficultyValue = parseInt(customEventData)
+        GameData.difficultyValue = parseInt(customEventData)
     }
 
     // update (dt) {}

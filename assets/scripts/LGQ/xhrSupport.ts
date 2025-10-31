@@ -227,7 +227,7 @@ var xhrSupport = {
 
   endGame(id, game_score, is_normalover, successCb: Function, failCb: Function) {
     httpUtil.post(
-      `${this.httpUrl}api/Index/gameover?server=1&id=${id}&game_score=${game_score}&is_normalover=$${is_normalover}`,
+      `${this.httpUrl}api/Index/gameover?server=1&id=${id}&game_score=${game_score}&is_normalover=${is_normalover}`,
       {
         isNeedToken: true
 
@@ -238,6 +238,35 @@ var xhrSupport = {
         failCb && failCb(fail), (failCb = null);
       })
   },
+
+  getRechargeList(successCb: Function, failCb: Function) {
+    httpUtil.post(
+      `${this.httpUrl}api/Index/coinlist?server=1&page=1&pagesize=999`,
+      {
+        isNeedToken: true
+
+      },
+      (success) => {
+        successCb && successCb(success), (successCb = null);
+      },
+      (fail) => {
+        failCb && failCb(fail), (failCb = null);
+      })
+  },
+
+  doRecharge(id, paytype, successCb: Function, failCb: Function) {
+    httpUtil.post(
+      `${this.httpUrl}api/Index/recharge?server=1&product_id=${id}&pay_type=${paytype}`,
+      {
+        isNeedToken: true
+      },
+      (success) => {
+        successCb && successCb(success), (successCb = null);
+      },
+      (fail) => {
+        failCb && failCb(fail), (failCb = null);
+      })
+  }
 
 
 

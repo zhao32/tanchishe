@@ -19,8 +19,8 @@ export default class Game extends cc.Component {
     @property(cc.Node)
     ndTime: cc.Node = null;
 
-    @property(cc.Node)
-    btnPause: cc.Node = null;
+    // @property(cc.Node)
+    // btnPause: cc.Node = null;
 
     @property(cc.Node)
     player: cc.Node = null;
@@ -42,12 +42,21 @@ export default class Game extends cc.Component {
     btnAddSpeed: cc.Node = null;
 
     @property(cc.Node)
-    btnMusic: cc.Node = null;
-    @property(cc.Node)
-    ndKai: cc.Node = null;
-    @property(cc.Node)
-    ndGuan: cc.Node = null;
+    btnSet: cc.Node = null;
 
+
+    // @property(cc.Node)
+    // btnMusic: cc.Node = null;
+    // @property(cc.Node)
+    // ndKai: cc.Node = null;
+    // @property(cc.Node)
+    // ndGuan: cc.Node = null;
+
+    @property(cc.Sprite)
+    bgSp: cc.Sprite = null;
+
+    @property(cc.SpriteFrame)
+    bgSpFrames: cc.SpriteFrame[] = [];
     // @property(cc.Node)
     // headIcon: cc.Node = null;
 
@@ -96,6 +105,12 @@ export default class Game extends cc.Component {
         this.joyStickBtn.on('touchcancel', this.onTouchCancel, this);
 
         Utils.addInnerMsg(InnerMsg.gameResume, this, this.gameResume);
+
+        this.bgSp.spriteFrame = this.bgSpFrames[GameData.sceneIdx];
+
+        GButton.AddClick(this.btnSet, () => {
+            Utils.openBundleView('pb/setNode', "game");
+        }, this);
     }
 
 
@@ -154,20 +169,25 @@ export default class Game extends cc.Component {
     }
 
     start() {
-        let musicData = UserInfo.getItem(UserCfg.MusicData, false);
-        if (!musicData) {
-            let data = {
-                isMusic: true,
-                isEffect: true
-            }
-            musicData = data;
+        // let musicData = UserInfo.getItem(UserCfg.MusicData, false);
+        // if (!musicData) {
+        //     let data = {
+        //         isMusic: true,
+        //         isEffect: true
+        //     }
+        //     musicData = data;
 
-            UserInfo.setItem(UserCfg.MusicData, musicData, false);
-        }
-        AudioManager.updateMusic(musicData);
-        this.ndKai.active = musicData.isMusic;
-        this.ndGuan.active = !musicData.isMusic;
+        //     UserInfo.setItem(UserCfg.MusicData, musicData, false);
+        // }
+        // let musicData = {
+        //     isMusic: true,
+        //     isEffect: true
+        // }
+        // AudioManager.updateMusic(musicData);
+        // this.ndKai.active = musicData.isMusic;
+        // this.ndGuan.active = !musicData.isMusic;
         AudioManager.playMusic("gameBGM");
+        GameData.Game = this
 
         this.ndCamera.getComponent(CameraFollow).target = this.player;
         this.score = 0
@@ -177,11 +197,11 @@ export default class Game extends cc.Component {
         this.isPause = true;
         this.setTime();
 
-        GButton.AddClick(this.btnPause, () => {
-            this.isPause = true;
-            this.player.getComponent(head).gamePause();
-            Utils.openBundleView("pb/PauseNode")
-        }, this);
+        // GButton.AddClick(this.btnPause, () => {
+        //     this.isPause = true;
+        //     this.player.getComponent(head).gamePause();
+        //     Utils.openBundleView("pb/PauseNode")
+        // }, this);
 
         GButton.AddClick(this.btnAddSpeed, () => {
             this.player.getComponent(head).resumeSpeed();
@@ -191,7 +211,12 @@ export default class Game extends cc.Component {
             this.player.getComponent(head).resumeSpeed();
         });
 
-        GButton.AddClick(this.btnMusic, this.onClickMusic, this);
+        // GButton.AddClick(this.btnMusic, this.onClickMusic, this);
+    }
+
+    doPause() {
+        this.isPause = true;
+        this.player.getComponent(head).gamePause();
     }
 
     gameResume() {
@@ -272,33 +297,33 @@ export default class Game extends cc.Component {
 
     }
 
-    onClickMusic() {
-        let musicData = UserInfo.getItem(UserCfg.MusicData, false);
-        if (!musicData) {
-            let data = {
-                isMusic: true,
-                isEffect: true
-            }
-            musicData = data;
+    // onClickMusic() {
+    //     let musicData = UserInfo.getItem(UserCfg.MusicData, false);
+    //     if (!musicData) {
+    //         let data = {
+    //             isMusic: true,
+    //             isEffect: true
+    //         }
+    //         musicData = data;
 
-            UserInfo.setItem(UserCfg.MusicData, musicData, false);
-        }
+    //         UserInfo.setItem(UserCfg.MusicData, musicData, false);
+    //     }
 
-        musicData.isMusic = !musicData.isMusic;
-        musicData.isEffect = !musicData.isEffect;
-        if (musicData.isMusic) {//播放音乐
-            AudioManager.resumeMusic();
-        }
-        else {//停止音乐
-            AudioManager.pauseMusic();
-        }
+    //     musicData.isMusic = !musicData.isMusic;
+    //     musicData.isEffect = !musicData.isEffect;
+    //     if (musicData.isMusic) {//播放音乐
+    //         AudioManager.resumeMusic();
+    //     }
+    //     else {//停止音乐
+    //         AudioManager.pauseMusic();
+    //     }
 
-        AudioManager.updateMusic(musicData);
+    //     AudioManager.updateMusic(musicData);
 
-        this.ndKai.active = musicData.isMusic;
-        this.ndGuan.active = !musicData.isMusic;
-        UserInfo.setItem(UserCfg.MusicData, musicData, false);
-    }
+    //     this.ndKai.active = musicData.isMusic;
+    //     this.ndGuan.active = !musicData.isMusic;
+    //     UserInfo.setItem(UserCfg.MusicData, musicData, false);
+    // }
 
     // update (dt) {}
 }

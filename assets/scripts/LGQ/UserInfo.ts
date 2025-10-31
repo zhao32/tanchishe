@@ -1,3 +1,4 @@
+import Game from "../Game";
 import ModelPlayer from "../model/ModelPlayer";
 
 export default class GameData {
@@ -29,8 +30,19 @@ export default class GameData {
     // }
 
     static userInfo: userInfo
-
+    /**场景类型id */
+    static sceneTypeId: number = 0
+    /**进入场景时的id 有唯一性 */
     static sceneId: number = 0
+
+    static sceneIdx: number = 0
+
+    static difficultyValue: number = 0
+
+    static Game: Game
+
+    /**免伤状态 */
+    static invincible: boolean = false
 }
 
 interface userInfo {

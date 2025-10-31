@@ -17,14 +17,14 @@ export default class monster extends cc.Component {
     }
 
     start() {
-        this.ndAni.timeScale = 0;
-        // this.ndAni.clearTrack(0);
-        if (!Game.I.isPause) {
-            this.isMove = true;
-            // this.ndAni.setAnimation(0, 'newAnimation', true);
-            this.ndAni.timeScale = 1;
-            this.setMove();
-        }
+        // this.ndAni.timeScale = 0;
+        // // this.ndAni.clearTrack(0);
+        // if (!Game.I.isPause) {
+        //     this.isMove = true;
+        //     // this.ndAni.setAnimation(0, 'newAnimation', true);
+        //     this.ndAni.timeScale = 1;
+        //     // this.setMove();
+        // }
     }
 
     randomPos() {
@@ -67,7 +67,7 @@ export default class monster extends cc.Component {
         } else {
             this.node.angle = angle - 90;
         }
-        
+
 
         let speed = Math.random() * 1 + 2;
         let time = Utils.getDistance(this.node.position, pos) / speed / 60;
@@ -80,20 +80,20 @@ export default class monster extends cc.Component {
     }
 
     gamePause() {
-        this.ndAni.timeScale = 0;
-        cc.Tween.stopAllByTarget(this.node);
-        // cc.tween(this.node).stop().start();
+        // this.ndAni.timeScale = 0;
+        // cc.Tween.stopAllByTarget(this.node);
+        // // cc.tween(this.node).stop().start();
     }
     gameResume() {
-        this.ndAni.timeScale = 1;
-        this.setMove();
+        // this.ndAni.timeScale = 1;
+        // this.setMove();
     }
 
-    update (dt) {
-        if (!Game.I.isPause && !this.isMove) {
-            this.isMove = true;
-            this.ndAni.timeScale = 1;
-            this.setMove();
-        }
+    update(dt) {
+        // if (!Game.I.isPause && !this.isMove) {
+        //     this.isMove = true;
+        //     this.ndAni.timeScale = 1;
+        //     this.setMove();
+        // }
     }
 }

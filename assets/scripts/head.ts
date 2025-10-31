@@ -1,5 +1,6 @@
 import Game from "./Game";
 import ResManager from "./LGQ/ResManager";
+import GameData from "./LGQ/UserInfo";
 import { Utils } from "./LGQ/Utils";
 import monster from "./monster";
 
@@ -17,6 +18,15 @@ export default class head extends cc.Component {
 
     @property(cc.Prefab)
     bodyPrefab: cc.Prefab = null;
+
+    @property(cc.Sprite)
+    headSp: cc.Sprite = null;
+
+    @property(cc.SpriteFrame)
+    headSpFrames: cc.SpriteFrame[] = [];
+
+    @property(cc.SpriteFrame)
+    bodySpFrames: cc.SpriteFrame[] = [];
 
     // @property([cc.Prefab])
     // foodPrefabS: Array<cc.Prefab> = new Array<cc.Prefab>();
@@ -71,7 +81,7 @@ export default class head extends cc.Component {
         this.snakeArray.push(this.node);
         this.snakeArray.push(this.ndWei);
         this.snakeArray[this.snakeArray.length - 1].curIndex = 0;
-
+        this.headSp.spriteFrame = this.headSpFrames[GameData.userInfo.skinId - 1]
         // this.speed = this.sectionLen / this.time;
 
         for (let i = 1; i <= this.bodyNum; i++) {
@@ -86,8 +96,8 @@ export default class head extends cc.Component {
         for (let i = 0; i < this.foodNum; i++) {
             this.getNewFood();
         }
-
-        for (let i = 0; i < this.monsterNum; i++) {
+        let monsterNumList = [10, 20, 30]
+        for (let i = 0; i < monsterNumList[GameData.difficultyValue]; i++) {
             this.getNewMonster();
         }
     }
@@ -125,20 +135,14 @@ export default class head extends cc.Component {
     getNewFood() {
         let rand = Math.random() * 100;
         let type = 0;
-        if (rand < 50) {
-            if (Math.random() * 100 < 50) {
-                type = 1
-            }
-        } else {
-            type = Math.floor(Math.random() * (this.foodType - 2)) + 2;
-        }
-        // if (type == 1) {
-        //     if (!this.isYuanbao) {
-        //         this.isYuanbao = true;
-        //     } else {
-        //         type = 0;
+        // if (rand < 50) {
+        //     if (Math.random() * 100 < 50) {
+        //         type = 1
         //     }
+        // } else {
+        //     type = Math.floor(Math.random() * (this.foodType - 2)) + 2;
         // }
+
         ResManager.I.loadBundlePrefab("pb/item/food" + type, (pb) => {
             let newFood = cc.instantiate(pb);
             this.ndFood.addChild(newFood);
@@ -146,8 +150,10 @@ export default class head extends cc.Component {
     }
 
     getNewMonster() {
-        let type = Math.floor(Math.random() * 2);
-        type = 1;
+        // let type = Math.floor(Math.random() * 2);
+        // type = 1;
+        let type = "";
+
         ResManager.I.loadBundlePrefab("pb/item/monster" + type, (pb) => {
             let newMonster = cc.instantiate(pb);
             this.ndFood.addChild(newMonster);
@@ -163,7 +169,7 @@ export default class head extends cc.Component {
         // item.curIndex = 0;
 
         let newBody: any = cc.instantiate(this.bodyPrefab);
-
+        newBody.getComponent(cc.Sprite).spriteFrame = this.bodySpFrames[GameData.userInfo.skinId - 1]
         if (this.snakeArray.length > this.bodyNum) {
             newBody.curIndex = this.snakeArray[this.snakeArray.length - 1].curIndex;
         } else {
@@ -377,7 +383,7 @@ export default class head extends cc.Component {
                 this.recordPointsAll();
                 break;
             case "body":
-                if (this.isStartColl) {
+                if (this.isStartColl && GameData.invincible == false) {
                     Game.I.isPause = true;
                     this.gamePause();
                     console.log("gameover 碰撞身体");
@@ -385,15 +391,19 @@ export default class head extends cc.Component {
                 }
                 break;
             case "wall":
-                Game.I.isPause = true;
-                this.gamePause();
-                console.log("gameover 碰撞沙滩");
-                Game.I.setGameOver();
+                if (GameData.invincible == false) {
+                    Game.I.isPause = true;
+                    this.gamePause();
+                    console.log("gameover 碰撞沙滩");
+                    Game.I.setGameOver();
+                }
                 break;
             case "monster":
-                Game.I.isPause = true;
-                this.gamePause();
-                console.log("gameover 碰撞金鱼");
+                if (GameData.invincible == false) {
+                    Game.I.isPause = true;
+                    this.gamePause();
+                    console.log("gameover 碰撞金鱼");
+                }
                 Game.I.setGameOver();
                 break;
 
