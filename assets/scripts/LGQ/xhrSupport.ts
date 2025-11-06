@@ -225,6 +225,20 @@ var xhrSupport = {
       })
   },
 
+  useTool(toolsId, successCb: Function, failCb: Function) {
+    httpUtil.post(
+      `${this.httpUrl}api/Index/usetools?server=1&toolsId=${toolsId}`,
+      {
+        isNeedToken: true
+
+      },
+      (success) => {
+        successCb && successCb(success), (successCb = null);
+      }, (fail) => {
+        failCb && failCb(fail), (failCb = null);
+      })
+  },
+
   endGame(id, game_score, is_normalover, successCb: Function, failCb: Function) {
     httpUtil.post(
       `${this.httpUrl}api/Index/gameover?server=1&id=${id}&game_score=${game_score}&is_normalover=${is_normalover}`,

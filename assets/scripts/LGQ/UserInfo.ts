@@ -43,6 +43,8 @@ export default class GameData {
 
     /**免伤状态 */
     static invincible: boolean = false
+    /**加速 */
+    static accelerate: boolean = false
 }
 
 interface userInfo {

@@ -36,10 +36,12 @@ export default class GameOver extends Lv_DialogView {
 
     openUIData(data: any): void {
         this.lblScore.string = data + "m";
+        GameData.Game.doPause();
     }
 
     restartGame() {
         let call = () => {
+            this.onClose();
             Utils.removeAllView();
             xhrSupport.enterGameByScore(GameData.sceneTypeId, (res) => {
                 res = JSON.parse(res);

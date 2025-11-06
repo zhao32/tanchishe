@@ -1,3 +1,4 @@
+import { InnerMsg } from "./com/MsgCfg";
 import Game from "./Game";
 import ResManager from "./LGQ/ResManager";
 import GameData from "./LGQ/UserInfo";
@@ -42,7 +43,7 @@ export default class head extends cc.Component {
     private monsterNum = 5;
 
     // the length of each section(section between body prefabs)
-    private sectionLen = 25;
+    private sectionLen = 45;
     private weiLen = 40;
     private headLen = 40;
 
@@ -102,8 +103,15 @@ export default class head extends cc.Component {
         }
     }
 
+    protected onEnable(): void {
+        Utils.addInnerMsg(InnerMsg.headPause, this, this.gamePause);
+
+    }
+
     onDestroy() {
         // touch event
+        Utils.removeInnerMsg(InnerMsg.headPause, this, this.gamePause);
+
     }
 
     randomColor() {
@@ -124,11 +132,11 @@ export default class head extends cc.Component {
     }
 
     addSpeed() {
-        this.speed += 1;
+        this.speed += 2;
         this.recordPointsAll();
     }
     resumeSpeed() {
-        this.speed -= 1;
+        this.speed -= 2;
         this.recordPointsAll();
     }
 
@@ -403,8 +411,8 @@ export default class head extends cc.Component {
                     Game.I.isPause = true;
                     this.gamePause();
                     console.log("gameover 碰撞金鱼");
+                    Game.I.setGameOver();
                 }
-                Game.I.setGameOver();
                 break;
 
             default:

@@ -6,6 +6,7 @@
 //  - https://docs.cocos.com/creator/2.4/manual/en/scripting/life-cycle-callbacks.html
 
 import { InnerMsg } from "./com/MsgCfg";
+import Game from "./Game";
 import AudioManager from "./LGQ/AudioManager";
 import GButton from "./LGQ/GButton";
 import Lv_DialogView from "./LGQ/Lv_DialogView";
@@ -39,6 +40,8 @@ export default class NewClass extends Lv_DialogView {
     // LIFE-CYCLE CALLBACKS:
 
     _from: string = "";
+
+    isQuit
     // onLoad () {}
 
     start() {
@@ -46,9 +49,11 @@ export default class NewClass extends Lv_DialogView {
         GButton.AddClick(this.btnSound, this.onBtnSound, this);
         GButton.AddClick(this.btnMusic, this.onBtnMusic, this);
         GButton.AddClick(this.btnLoginOut, this.onLoginOut, this);
+        GButton.AddClick(this.btnGameOut, this.onOutGame, this);
 
         this.btnSound.getComponent(cc.Sprite).spriteFrame = this.chatSp[AudioManager.isEffect ? 0 : 1];
         this.btnMusic.getComponent(cc.Sprite).spriteFrame = this.chatSp[AudioManager.isMusic ? 0 : 1];
+        this.isQuit = false;
     }
 
     onBtnSound() {
@@ -88,15 +93,16 @@ export default class NewClass extends Lv_DialogView {
 
     onOutGame() {
         let call = () => {
+            this.isQuit = true
             this.closeView();
-            GameData.Game.setGameOver();
+            GameData.Game.quitBySet();
         }
-        Utils.openBundleView('pb/commonTipNode', [10, "现在退出将损失", "是否退出？", call]);
+        Utils.openBundleView('pb/commonTipNode', [10, "现在退出将损失", "是否退出？", call, "set"]);
     }
 
     onClose() {
         this.closeView();
-        if (this._from != "trun") {
+        if (this._from != "trun" && !this.isQuit) {
             Utils.sendInnerMsg(InnerMsg.gameResume);
         }
     }

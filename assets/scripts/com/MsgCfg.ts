@@ -6,6 +6,8 @@ export enum InnerMsg {
 
     gameResume,  //游戏继续
 
+    headPause,   //暂停
+
     updatePlayerData,
     updatePlayerInfo,
     updateCurrent,

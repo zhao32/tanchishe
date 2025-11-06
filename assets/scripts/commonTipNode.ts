@@ -5,8 +5,10 @@
 // Learn life-cycle callbacks:
 //  - https://docs.cocos.com/creator/2.4/manual/en/scripting/life-cycle-callbacks.html
 
+import { InnerMsg } from "./com/MsgCfg";
 import GButton from "./LGQ/GButton";
 import Lv_DialogView from "./LGQ/Lv_DialogView";
+import { Utils } from "./LGQ/Utils";
 
 const { ccclass, property } = cc._decorator;
 
@@ -29,7 +31,7 @@ export default class NewClass extends Lv_DialogView {
     @property(cc.Label)
     desLabel2: cc.Label = null;
 
-
+    from
     call: Function = null;
     // onLoad () {}
 
@@ -40,6 +42,8 @@ export default class NewClass extends Lv_DialogView {
 
     onClose(): void {
         this.closeView();
+        if (this.from != "set") Utils.sendInnerMsg(InnerMsg.gameResume);
+
     }
 
     openUIData(data): void {
@@ -47,6 +51,7 @@ export default class NewClass extends Lv_DialogView {
         this.desLabel1.string = data[1];
         this.desLabel2.string = data[2];
         this.call = data[3];
+        this.from = data[4];
     }
 
     onSure(): void {
@@ -54,6 +59,7 @@ export default class NewClass extends Lv_DialogView {
             this.call();
         }
         this.closeView();
+        if (this.from != "set") Utils.sendInnerMsg(InnerMsg.gameResume);
     }
 
 

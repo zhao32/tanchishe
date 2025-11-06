@@ -64,7 +64,7 @@ export default class NewClass extends Lv_DialogView {
                 xhrSupport.enterGameByScore(this.sceneDataList[GameData.sceneIdx].id, (res) => {
                     res = JSON.parse(res);
                     if (res.code == 1) {
-                        this.onClose();
+                        Utils.removeAllView();
                         cc.director.loadScene('game');
                         GameData.userInfo.score -= 10
                         GameData.sceneId = res.data.id

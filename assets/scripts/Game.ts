@@ -1,5 +1,6 @@
 import CameraFollow from "./CameraFollow";
 import NetMsg, { InnerMsg } from "./com/MsgCfg";
+import PromptFly from "./com/PromptFly";
 import head from "./head";
 import AudioManager from "./LGQ/AudioManager";
 import GButton from "./LGQ/GButton";
@@ -42,6 +43,9 @@ export default class Game extends cc.Component {
     btnAddSpeed: cc.Node = null;
 
     @property(cc.Node)
+    btnMS: cc.Node = null;
+
+    @property(cc.Node)
     btnSet: cc.Node = null;
 
 
@@ -51,6 +55,9 @@ export default class Game extends cc.Component {
     // ndKai: cc.Node = null;
     // @property(cc.Node)
     // ndGuan: cc.Node = null;
+
+    @property(cc.Node)
+    bgPlus: cc.Node = null;
 
     @property(cc.Sprite)
     bgSp: cc.Sprite = null;
@@ -64,30 +71,9 @@ export default class Game extends cc.Component {
 
     isPause = false;
     private time = 3;
+
+    toolsData = []
     onLoad() {
-
-        // wx.setDeviceOrientation({
-        //     value: "landscape",
-        //     success: () => {
-        //         console.log("转屏成功");
-        //         let screenSize = cc.view.getDesignResolutionSize();
-        //         console.log('屏幕设计尺寸', screenSize.height, screenSize.width);
-        //         let height = screenSize.height;
-        //         let width = screenSize.width;
-        //         // screenSize.height = screenSize.width;
-        //         // screenSize.width = height;
-        //         // // cc.screen.windowSize = screenSize;
-        //         cc.find("Canvas").width = 1334;
-        //         cc.find("Canvas").height = 750;
-        //         cc.view.setDesignResolutionSize(height, width, cc.ResolutionPolicy.FIXED_WIDTH);
-        //         // let canvasSize = cc.view.getCanvasSize();
-        //         // let ratio = cc.view.getDevicePixelRatio();
-        //         console.log("数据界面大小", screenSize, cc.view.getDesignResolutionSize(), cc.find("Canvas"));
-
-        //         // cc.view?.changeCanvasSize(canvasSize.height / ratio, canvasSize.width / ratio);
-        //     }
-        // })
-
         Game.I = this;
 
         cc.debug.setDisplayStats(false);
@@ -107,10 +93,11 @@ export default class Game extends cc.Component {
         Utils.addInnerMsg(InnerMsg.gameResume, this, this.gameResume);
 
         this.bgSp.spriteFrame = this.bgSpFrames[GameData.sceneIdx];
-
+        this.bgPlus.active = GameData.sceneIdx == 0;
         GButton.AddClick(this.btnSet, () => {
             Utils.openBundleView('pb/setNode', "game");
         }, this);
+
     }
 
 
@@ -202,16 +189,120 @@ export default class Game extends cc.Component {
         //     this.player.getComponent(head).gamePause();
         //     Utils.openBundleView("pb/PauseNode")
         // }, this);
-
         GButton.AddClick(this.btnAddSpeed, () => {
-            this.player.getComponent(head).resumeSpeed();
-        }, this, () => {
-            this.player.getComponent(head).addSpeed();
-        }, null, () => {
-            this.player.getComponent(head).resumeSpeed();
-        });
+            if (this.toolsData[1].use_status == 0) { //不可用
+                this.doPause()
+                let call = () => {
+                    xhrSupport.buyTool(this.toolsData[1].id, (res) => {
+                        res = JSON.parse(res)
+                        if (res.code == 1) {
+                            this.toolsData[1].use_status = 1
+                            this.btnAddSpeed.children[0].active = false
+                        } else {
+                            PromptFly.Show(res.msg);
+                        }
+                    }, () => { })
+                }
+                Utils.openBundleView('pb/commonTipNode', [this.toolsData[1].price, "是否花费", "购买加速道具", call]);
+            } else { //可用
+                if (!GameData.accelerate) {
+                    xhrSupport.useTool(this.toolsData[1].id, (res) => {
+                        res = JSON.parse(res);
+                        if (res.code == 1) {
+                            // GameData.userInfo.score -= 10
+                            this.useToolSpeed();
+                        } else {
+                            PromptFly.Show(res.msg);
+                        }
+                    }, () => { })
+                } else {
+                    // this.player.getComponent(head).addSpeed();
+                }
+            }
+        }, this)
+
+        // GButton.AddClick(this.btnAddSpeed, () => {
+        //     this.player.getComponent(head).resumeSpeed();
+        // }, this, () => {
+        //     this.player.getComponent(head).addSpeed();
+        // }, null, () => {
+        //     this.player.getComponent(head).resumeSpeed();
+        // });
+
+        xhrSupport.getToolList(1, 2, (res) => {
+            res = JSON.parse(res);
+            if (res.code == 1) {
+                this.toolsData = res.data.list
+                this.btnMS.children[0].active = res.data.list[0].use_status == 0
+                this.btnAddSpeed.children[0].active = res.data.list[1].use_status == 0
+            }
+        }, () => { })
+
+
+        GButton.AddClick(this.btnMS, () => {
+            if (this.toolsData[0].use_status == 0) { //不可用
+                this.doPause()
+                let call = () => {
+                    this.gameResume()
+                    xhrSupport.buyTool(this.toolsData[0].id, (res) => {
+                        res = JSON.parse(res)
+                        if (res.code == 1) {
+                            this.toolsData[0].use_status = 1
+                            this.btnMS.children[0].active = false
+                        } else {
+                            PromptFly.Show(res.msg);
+                        }
+                    }, () => { })
+                }
+                Utils.openBundleView('pb/commonTipNode', [this.toolsData[0].price, "是否花费", "购买无敌道具", call]);
+            } else { //可用
+                if (!GameData.invincible) {
+                    xhrSupport.useTool(this.toolsData[0].id, (res) => {
+                        res = JSON.parse(res);
+                        if (res.code == 1) {
+                            // GameData.userInfo.score -= 10
+                            this.useToolMS();
+                        } else {
+                            PromptFly.Show(res.msg);
+                        }
+                    }, () => { })
+                }
+            }
+        }, this)
 
         // GButton.AddClick(this.btnMusic, this.onClickMusic, this);
+    }
+
+    useToolMS() {
+        GameData.invincible = true
+        // this.player.opacity = 120
+        this.btnMS.children[0].active = true
+        this.btnMS.children[0].getComponent(cc.Sprite).fillRange = 0;
+        cc.tween(this.btnMS.children[0].getComponent(cc.Sprite)).to(10, { fillRange: 1 }).start();
+        this.scheduleOnce(() => {
+            GameData.invincible = false
+            // this.player.stopAllActions();
+            // this.player.opacity = 255
+            this.toolsData[0].use_status = 0
+        }, 10)
+    }
+
+    useToolSpeed() {
+        this.player.getComponent(head).addSpeed();
+
+        GameData.accelerate = true
+        // this.player.opacity = 120
+        this.btnAddSpeed.children[0].active = true
+        this.btnAddSpeed.children[0].getComponent(cc.Sprite).fillRange = 0;
+        cc.tween(this.btnAddSpeed.children[0].getComponent(cc.Sprite)).to(10, { fillRange: 1 }).start();
+        this.scheduleOnce(() => {
+            GameData.accelerate = false
+            this.player.stopAllActions();
+            // this.player.opacity = 255
+            // this.toolsData[1].use_status = 0
+            this.player.getComponent(head).resumeSpeed();
+
+        }, 10)
     }
 
     doPause() {
@@ -222,6 +313,18 @@ export default class Game extends cc.Component {
     gameResume() {
         this.isPause = false;
         this.player.getComponent(head).gameResume();
+    }
+
+    quitBySet() {
+        this.doPause();
+        xhrSupport.endGame(GameData.sceneId, this.score, 1, (res) => {
+            res = JSON.parse(res);
+            if (res.code == 1) {
+                Utils.openBundleView('pb/trunUI', this.score);
+            } else {
+                PromptFly.Show(res.msg);
+            }
+        }, () => { })
     }
 
     setTime() {
@@ -280,20 +383,18 @@ export default class Game extends cc.Component {
     }
 
     setGameOver() {
-        let data = {
-            score: this.score
-        };
-        // Utils.sendNetMsg(NetMsg.addScore, data, () => {
-
-        // })
 
         xhrSupport.endGame(GameData.sceneId, this.score, 1, (res) => {
-
+            res = JSON.parse(res);
+            if (res.code == 1) {
+                Utils.openBundleView('pb/GameOver', this.score);
+            } else {
+                PromptFly.Show(res.msg);
+            }
         }, () => { })
 
-        setTimeout(() => {
-            Utils.openBundleView('pb/GameOver', this.score);
-        }, 500);
+        // setTimeout(() => {
+        // }, 500);
 
     }
 

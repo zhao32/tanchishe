@@ -59,6 +59,7 @@ export default class Start extends cc.Component {
                 xhrSupport.getUserInfo((res) => {
                     res = JSON.parse(res);
                     if (res.code == 1) {
+                        this.node.getChildByName('loginNode').active = false
                         Utils.openBundleView('pb/trunUI');
                         GameData.userInfo = res.data.userInfo;
                     } else {
@@ -90,6 +91,7 @@ export default class Start extends cc.Component {
         GButton.AddClick(this.btnLogin, () => {
             Utils.openBundleView('pb/loginNode');
         }, this)
+        this.node.getChildByName('loginNode').active = true
 
         this.loadBundle();
         cc.director.preloadScene('game');
