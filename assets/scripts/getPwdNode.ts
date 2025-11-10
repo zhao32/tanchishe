@@ -36,13 +36,33 @@ export default class NewClass extends Lv_DialogView {
     @property(cc.Toggle)
     pwdToggle: cc.Toggle = null;
 
+    @property(cc.Sprite)
+    sp: cc.Sprite = null;
 
+    @property(cc.SpriteFrame)
+    spFrames: cc.SpriteFrame[] = [];
+
+    @property(cc.Label)
+    cutDownLab: cc.Label = null;
+
+    time = 30
 
     start() {
         GButton.AddClick(this.btnClose, this.onClose, this);
         GButton.AddClick(this.btnChangePwd, this.onChangePwd, this);
         GButton.AddClick(this.btnGetCode, this.onGetCode, this);
+        this.time = 30;
+        this.cutDownLab.node.parent.active = false;
+    }
 
+    openUIData(data: any): void {
+
+
+        if (data == "找回") {
+            this.sp.spriteFrame = this.spFrames[0];
+        } else {
+            this.sp.spriteFrame = this.spFrames[1];
+        }
     }
 
 
@@ -56,14 +76,36 @@ export default class NewClass extends Lv_DialogView {
             return;
         }
 
+        this.time = 30;
+        this.cutDownLab.node.parent.active = true;
+        this.cutDownLab.string = this.time + 's';
+        this.schedule(this.schTime, 1);
         xhrSupport.getEmailCode(this.accountEidt.string, "user_retrieve_pwd", (res: any) => {
             res = JSON.parse(res);
             if (res.code == 1) {
                 PromptFly.Show('发送成功');
+
             } else {
                 PromptFly.Show(res.msg);
+                this.time = 30;
+                this.cutDownLab.node.parent.active = false;
+                this.unschedule(this.schTime);
             }
-        }, () => { })
+        }, () => {
+            this.time = 30;
+            this.cutDownLab.node.parent.active = false;
+            this.unschedule(this.schTime);
+        })
+    }
+
+    schTime() {
+        this.time--;
+        if (this.time < 0) {
+            this.unschedule(this.schTime);
+            this.cutDownLab.node.parent.active = false;
+        } else {
+            this.cutDownLab.string = this.time + 's';
+        }
     }
 
     onChangePwd() {

@@ -59,7 +59,7 @@ export default class NewClass extends Lv_DialogView {
             this.call();
         }
         this.closeView();
-        if (this.from != "set") Utils.sendInnerMsg(InnerMsg.gameResume);
+        if (this.from != "set" && this.from != "over") Utils.sendInnerMsg(InnerMsg.gameResume);
     }
 
 

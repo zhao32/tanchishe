@@ -183,6 +183,7 @@ export default class Game extends cc.Component {
         this.ndTime.active = false;
         this.isPause = true;
         this.setTime();
+        this.doPause();
 
         // GButton.AddClick(this.btnPause, () => {
         //     this.isPause = true;
@@ -274,6 +275,7 @@ export default class Game extends cc.Component {
     }
 
     useToolMS() {
+        PromptFly.Show("获取10S中的免伤效果");
         GameData.invincible = true
         // this.player.opacity = 120
         this.btnMS.children[0].active = true
@@ -289,6 +291,7 @@ export default class Game extends cc.Component {
 
     useToolSpeed() {
         this.player.getComponent(head).addSpeed();
+        PromptFly.Show("获取10S的加速效果");
 
         GameData.accelerate = true
         // this.player.opacity = 120
@@ -341,7 +344,8 @@ export default class Game extends cc.Component {
                         this.setTime();
                     } else {
                         this.timeNode.active = false;
-                        this.isPause = false;
+                        // this.isPause = false;
+                        this.gameResume();
 
                         let dir = new cc.Vec3(1, 0, 0).normalize();
                         this.player.getComponent("head").dir = dir;
@@ -387,6 +391,7 @@ export default class Game extends cc.Component {
         xhrSupport.endGame(GameData.sceneId, this.score, 1, (res) => {
             res = JSON.parse(res);
             if (res.code == 1) {
+                this.doPause();
                 Utils.openBundleView('pb/GameOver', this.score);
             } else {
                 // PromptFly.Show(res.msg);

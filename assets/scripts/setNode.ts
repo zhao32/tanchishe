@@ -33,6 +33,9 @@ export default class NewClass extends Lv_DialogView {
     @property(cc.Node)
     btnGameOut: cc.Node = null;
 
+    @property(cc.Node)
+    btnResetPwd: cc.Node = null;
+
 
 
     @property(cc.SpriteFrame)
@@ -50,6 +53,10 @@ export default class NewClass extends Lv_DialogView {
         GButton.AddClick(this.btnMusic, this.onBtnMusic, this);
         GButton.AddClick(this.btnLoginOut, this.onLoginOut, this);
         GButton.AddClick(this.btnGameOut, this.onOutGame, this);
+        GButton.AddClick(this.btnResetPwd, () => {
+            Utils.openBundleView("pb/getPwdNode", "修改");
+        }, this);
+
 
         this.btnSound.getComponent(cc.Sprite).spriteFrame = this.chatSp[AudioManager.isEffect ? 0 : 1];
         this.btnMusic.getComponent(cc.Sprite).spriteFrame = this.chatSp[AudioManager.isMusic ? 0 : 1];

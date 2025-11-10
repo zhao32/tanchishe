@@ -54,7 +54,7 @@ export default class loginNode extends Lv_DialogView {
 
 
     onResetPwd() {
-        Utils.openBundleView('pb/getPwdNode');
+        Utils.openBundleView("pb/getPwdNode", "找回");
     }
 
     onRegister() {

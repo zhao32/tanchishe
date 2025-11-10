@@ -49,7 +49,7 @@ export default class GameOver extends Lv_DialogView {
             xhrSupport.enterGameByScore(GameData.sceneTypeId, (res) => {
                 res = JSON.parse(res);
                 if (res.code == 1) {
-                    this.onClose();
+                    // Utils.removeAllView();
                     cc.director.loadScene('game');
                     GameData.userInfo.score -= 10
                     GameData.sceneId = res.data.id
@@ -58,7 +58,7 @@ export default class GameOver extends Lv_DialogView {
                 }
             }, () => { })
         }
-        Utils.openBundleView('pb/commonTipNode', [10, "是否消耗", "重玩游戏", call]);
+        Utils.openBundleView('pb/commonTipNode', [10, "是否消耗", "重玩游戏", call, "over"]);
     }
 
     // update (dt) {}
