@@ -5,6 +5,7 @@ import Lv_DialogView from "./LGQ/Lv_DialogView";
 import GameData from "./LGQ/UserInfo";
 import { Utils } from "./LGQ/Utils";
 import xhrSupport from "./LGQ/xhrSupport";
+import AudioManager from "./LGQ/AudioManager";
 
 const { ccclass, property } = cc._decorator;
 
@@ -37,6 +38,8 @@ export default class GameOver extends Lv_DialogView {
     openUIData(data: any): void {
         this.lblScore.string = data + "m";
         GameData.Game.doPause();
+        AudioManager.playEffect("sound_lose");
+
     }
 
     restartGame() {

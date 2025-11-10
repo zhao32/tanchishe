@@ -88,7 +88,7 @@ export default class NewClass extends Lv_DialogView {
     onLoginOut() {
         localStorage.clear();
         Utils.removeAllView();
-        cc.director.preloadScene('start');
+        cc.director.loadScene('start');
     }
 
     onOutGame() {

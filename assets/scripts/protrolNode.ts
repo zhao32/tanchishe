@@ -36,7 +36,7 @@ export default class NewClass extends Lv_DialogView {
         xhrSupport.getProtrol(data, (res: any) => {
             res = JSON.parse(res)
             if (res.code == 1) {
-                this.text.string = `<color=#00ff00>${res.data.editor}</c>`
+                this.text.string = `<color=#000000>${res.data.editor}</c>`
             } else {
                 PromptFly.Show(res.msg);
             }

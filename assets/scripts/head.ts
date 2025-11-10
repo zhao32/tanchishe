@@ -4,6 +4,7 @@ import ResManager from "./LGQ/ResManager";
 import GameData from "./LGQ/UserInfo";
 import { Utils } from "./LGQ/Utils";
 import monster from "./monster";
+import AudioManager from "./LGQ/AudioManager";
 
 const { ccclass, property } = cc._decorator;
 
@@ -357,6 +358,7 @@ export default class head extends cc.Component {
             case "food":
                 this.isStartColl = true;
                 other.node.removeFromParent();
+                AudioManager.playEffect("bonus");
 
                 // produce new food
                 this.getNewFood();
@@ -376,6 +378,7 @@ export default class head extends cc.Component {
                 this.isStartColl = true;
                 this.isYuanbao = false;
                 other.node.removeFromParent();
+                AudioManager.playEffect("bonus");
 
                 // produce new food
                 this.getNewFood();

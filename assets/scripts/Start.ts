@@ -96,6 +96,7 @@ export default class Start extends cc.Component {
         this.loadBundle();
         cc.director.preloadScene('game');
 
+        AudioManager.playMusic("gameBGM");
 
         // this.ndLogin.active = false;
         // let isCodeBtn = false;

@@ -1,5 +1,5 @@
 {
-  "title": "DuanWuHuoDong",
+  "title": "tanchishe",
   "packageName": "org.cocos2d.demo",
   "startScene": "f17fa977-3228-4206-a870-2f389183296a",
   "excludeScenes": [],
@@ -9,7 +9,7 @@
     "portrait": false,
     "upsideDown": false
   },
-  "webOrientation": "portrait",
+  "webOrientation": "landscape",
   "inlineSpriteFrames": true,
   "inlineSpriteFrames_native": true,
   "mainCompressionType": "default",

@@ -32,6 +32,9 @@ export default class NewClass extends Lv_DialogView {
     @property(cc.Node)
     item: cc.Node = null;
 
+    @property(cc.SpriteFrame)
+    coinFrames: cc.SpriteFrame[] = [];
+
     selectIdx = 0;
 
 
@@ -63,6 +66,9 @@ export default class NewClass extends Lv_DialogView {
                     } else {
                         item.getChildByName("checkmark").active = false;
                     }
+
+                    let idx = i > 2 ? 2 : i;
+                    item.getChildByName("coin").getComponent(cc.Sprite).spriteFrame = this.coinFrames[idx];
 
                     item.getChildByName("prizeLabel").getComponent(cc.Label).string = res.data.list[i].price;
                     item.getChildByName("scoreLabel").getComponent(cc.Label).string = res.data.list[i].score;

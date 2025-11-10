@@ -173,7 +173,7 @@ export default class Game extends cc.Component {
         // AudioManager.updateMusic(musicData);
         // this.ndKai.active = musicData.isMusic;
         // this.ndGuan.active = !musicData.isMusic;
-        AudioManager.playMusic("gameBGM");
+        // AudioManager.playMusic("gameBGM");
         GameData.Game = this
 
         this.ndCamera.getComponent(CameraFollow).target = this.player;
@@ -389,7 +389,7 @@ export default class Game extends cc.Component {
             if (res.code == 1) {
                 Utils.openBundleView('pb/GameOver', this.score);
             } else {
-                PromptFly.Show(res.msg);
+                // PromptFly.Show(res.msg);
             }
         }, () => { })
 
