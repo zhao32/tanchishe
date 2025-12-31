@@ -280,7 +280,41 @@ var xhrSupport = {
       (fail) => {
         failCb && failCb(fail), (failCb = null);
       })
+  },
+
+  //api/Index/applepay_averify
+  RechargeCheck(receipt_data, order_sn, successCb: Function, failCb: Function) {
+    httpUtil.post(
+      `${this.httpUrl}api/Index/applepay_averify?server=1`,
+      {
+        receipt_data: receipt_data,
+        order_sn: order_sn,
+        isNeedToken: true
+      },
+      (success) => {
+        successCb && successCb(success), (successCb = null);
+      },
+      (fail) => {
+        failCb && failCb(fail), (failCb = null);
+      })
   }
+
+
+  // RechargeCheck(receipt_data, order_sn, successCb: Function, failCb: Function) {
+  //   httpUtil.post(
+  //     `${this.httpUrl}api/Index/applepay_averify?server=1&receipt_data=${receipt_data}&order_sn=${order_sn}`,
+  //     {
+  //       receipt_data: receipt_data,
+  //       order_sn: order_sn,
+  //       isNeedToken: true
+  //     },
+  //     (success) => {
+  //       successCb && successCb(success), (successCb = null);
+  //     },
+  //     (fail) => {
+  //       failCb && failCb(fail), (failCb = null);
+  //     })
+  // }
 
 
 

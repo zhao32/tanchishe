@@ -6,6 +6,7 @@
 //  - https://docs.cocos.com/creator/2.4/manual/en/scripting/life-cycle-callbacks.html
 
 import PromptFly from "./com/PromptFly";
+import EventManager from "./LGQ/EventManager";
 import GButton from "./LGQ/GButton";
 import Lv_DialogView from "./LGQ/Lv_DialogView";
 import GameData from "./LGQ/UserInfo";
@@ -41,6 +42,18 @@ export default class NewClass extends Lv_DialogView {
     // LIFE-CYCLE CALLBACKS:
 
     // onLoad () {}
+
+    protected onEnable(): void {
+        EventManager.getInstance().registerListener(EventManager.UPDATE_SCORE, this, this.updateScore.bind(this))
+    }
+
+    protected onDisable(): void {
+        EventManager.getInstance().unRegisterListener(EventManager.UPDATE_SCORE, this)
+    }
+
+    updateScore() {
+        this.scoreLabel.string = GameData.userInfo.score.toString()
+    }
 
     start() {
         GButton.AddClick(this.btnSet, () => {

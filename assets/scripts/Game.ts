@@ -100,7 +100,6 @@ export default class Game extends cc.Component {
 
     }
 
-
     onDestroy() {
         // touch event
         this.joyStickBtn.off('touchstart', this.onTouchStart, this);

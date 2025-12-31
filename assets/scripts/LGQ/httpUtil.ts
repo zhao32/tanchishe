@@ -1,9 +1,9 @@
 var httpUtil = {
     request: function (method, url, data, success, fail, header?: any, responseType?: any) {
         if (header === undefined) header = {};
-        if (responseType == undefined) {
-            responseType = cc.sys.isNative ? "json" : "";
-        }
+        // if (responseType == undefined) {
+        //     responseType = cc.sys.isNative ? "json" : "";
+        // }
         var xhr = new XMLHttpRequest();
         xhr.open(method, url, true);
 
