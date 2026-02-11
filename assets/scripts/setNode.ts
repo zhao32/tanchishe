@@ -36,7 +36,8 @@ export default class NewClass extends Lv_DialogView {
     @property(cc.Node)
     btnResetPwd: cc.Node = null;
 
-
+    @property(cc.Node)
+    btnDeleteCount: cc.Node = null;
 
     @property(cc.SpriteFrame)
     chatSp: cc.SpriteFrame[] = [];
@@ -56,6 +57,11 @@ export default class NewClass extends Lv_DialogView {
         GButton.AddClick(this.btnResetPwd, () => {
             Utils.openBundleView("pb/getPwdNode", "修改");
         }, this);
+
+        GButton.AddClick(this.btnDeleteCount, () => {
+            Utils.openBundleView("pb/deleteCountNode");
+        }, this);
+
 
 
         this.btnSound.getComponent(cc.Sprite).spriteFrame = this.chatSp[AudioManager.isEffect ? 0 : 1];

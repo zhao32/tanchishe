@@ -47,6 +47,22 @@ var xhrSupport = {
       })
   },
 
+  delectAccount(successCb: Function, failCb: Function) {
+    httpUtil.post(
+      `${this.httpUrl}api/Login/delete_user?server=1`,
+      {
+        isNeedToken: true
+
+      },
+      (success) => {
+        successCb && successCb(success), (successCb = null);
+      },
+      (fail) => {
+        failCb && failCb(fail), (failCb = null);
+      })
+  },
+
+
   getEmailCode(email, event, successCb: Function, failCb: Function) {
     httpUtil.post(
       `${this.httpUrl}api/Ems/send?email=${email}&event=${event}&server=1`,
